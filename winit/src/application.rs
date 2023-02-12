@@ -4,6 +4,7 @@ mod profiler;
 mod state;
 
 pub use state::State;
+use winit::platform::unix::{WindowBuilderExtUnix, XWindowType};
 
 use crate::clipboard::{self, Clipboard};
 use crate::conversion;
@@ -156,6 +157,7 @@ where
     log::info!("Window builder: {:#?}", builder);
 
     let window = builder
+        .with_x11_window_type(vec![XWindowType::Dialog])
         .build(&event_loop)
         .map_err(Error::WindowCreationFailed)?;
 
