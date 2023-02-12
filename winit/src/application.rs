@@ -4,7 +4,9 @@ mod profiler;
 mod state;
 
 pub use state::State;
-use winit::platform::unix::{WindowBuilderExtUnix, XWindowType};
+use winit::platform::unix::{
+    EventLoopBuilderExtUnix, WindowBuilderExtUnix, XWindowType,
+};
 
 use crate::clipboard::{self, Clipboard};
 use crate::conversion;
@@ -129,7 +131,9 @@ where
     #[cfg(feature = "trace")]
     let _ = info_span!("Application", "RUN").entered();
 
-    let event_loop = EventLoopBuilder::with_user_event().build();
+    let event_loop = EventLoopBuilder::with_user_event()
+        .with_any_thread(true)
+        .build();
     let proxy = event_loop.create_proxy();
 
     let runtime = {
